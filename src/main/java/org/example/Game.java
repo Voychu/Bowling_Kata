@@ -4,30 +4,44 @@ public class Game {
 
     private final Frame[] frames;
 
-    //tu singleton ?
-    public Game(String[] individualScores){
-        this.frames = initializeFrames(individualScores);
+    private static final int NUMBER_OF_FRAMES = 10;
+
+    public Game(String[] eachFrameScores) {
+        this.frames = initializeFrames(eachFrameScores);
     }
 
     private Frame[] initializeFrames(String[] individualScores){
         Frame[] frames = new Frame[individualScores.length];
-        for(int i=0; i<individualScores.length; i++){
-            frames[i] = new Frame(individualScores[i]);
-        }
+            for(int i=0; i<individualScores.length; i++){
+                frames[i] = new Frame(individualScores[i]);
+            }
         return frames;
     }
 
-    private int countTotalScore(Frame[] frames){
-        int totalScore=0;
-        for(Frame frame : frames){
-            totalScore += frame.getTotalPins();
+    private int calculateTotalScore(Frame[] frames){
+        int totalScore = 0;
+        for(int i=0; i<frames.length; i++){
+
+            if(i<NUMBER_OF_FRAMES) {
+                totalScore += frames[i].getTotalPins();
+
+                if (frames[i].isSpare()) {
+                    totalScore += frames[i + 1].getPinsFromFirstThrow();
+                }
+                if (frames[i].isStrike()) {
+                    totalScore += frames[i + 1].getPinsFromFirstThrow();
+                    if (frames[i + 1].getNumberOfThisFramesThrows() != 1)
+                        totalScore += frames[i + 1].getPinsFromSecondThrow();
+                    else
+                        totalScore += frames[i + 2].getPinsFromFirstThrow();
+                }
+            }
         }
         return totalScore;
+
     }
 
     public int getTotalScore(){
-        return countTotalScore(this.frames);
+        return calculateTotalScore(this.frames);
     }
-
-
 }
