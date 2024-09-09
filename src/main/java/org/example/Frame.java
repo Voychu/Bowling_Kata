@@ -27,6 +27,7 @@ public class Frame {
         return false;
     }
 
+    //tu wyrzucić Exception?
     private ArrayList<Integer> countPinsForEachThrow(String frameScore){
         ArrayList<Integer> thisFramesThrows = new ArrayList<>();
 
@@ -38,6 +39,7 @@ public class Frame {
         }
         return thisFramesThrows;
     }
+
 
     private int charToPin(char pinChar){
         if(pinChar == 'X')
